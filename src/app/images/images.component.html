@@ -1,0 +1,89 @@
+<h4 class="font-weight-bold brand-color py-3 mb-4">
+  <ng-container *ngIf="pageImagesType == 'slider'">
+    <i class="fas fa-images"></i>
+    Sliders
+  </ng-container>
+  <ng-container *ngIf="pageImagesType == 'partner'">
+    <i class="fas fa-handshake"></i>
+    Partners
+  </ng-container>
+</h4>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="dropzone p-2" #dz [dropzone]="dropzoneConfig" (success)="onUploadSuccess($event)">
+          <div class="dz-message needsclick">
+            Drop files here or click to upload
+            <span class="note needsclick" *ngIf="pageImagesType == 'slider'">
+              ( Selected files are uploaded as
+              sliders.
+              <br>
+              <small>Image must be rectangle. i.e 1000px X 500px )</small>
+            </span>
+            <span class="note needsclick" *ngIf="pageImagesType == 'partner'">( Selected files are uploaded as
+              partners. )</span>
+          </div>
+          <div class="fallback">
+            <input name="file" type="file" multiple />
+          </div>
+        </div>
+      </div>
+      <div class="buttons-div">
+        <button (click)="onReset()" class="btn btn-danger">Reset</button>
+
+        <button (click)="onSubmit()" class="btn btn-primary float-right" [disabled]="toolService.btnLoading">
+          <span class="my-btn-loader">
+            Submit
+            <span *ngIf="toolService.btnLoading" class="my-loader"></span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-8">
+    <ng-container *ngIf="toolService.showLoading == true">
+      <div class="col my-loading">
+        <div class="sk-wave sk-primary">
+          <div class="sk-rect sk-rect1"></div>
+          <div class="sk-rect sk-rect2"></div>
+          <div class="sk-rect sk-rect3"></div>
+          <div class="sk-rect sk-rect4"></div>
+          <div class="sk-rect sk-rect5"></div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="toolService.showLoading == false">
+      <div class="row form-row" #galleryContainer>
+        <div class="gallery-sizer col-sm-6 col-md-6 col-xl-3 position-absolute"></div>
+        <div *ngFor="let item of allImages" class="gallery-thumbnail col-sm-6 col-md-6 col-xl-3 mb-2">
+          <a href="javascript:void(0)" (click)="openGallery(item)" class="img-thumbnail img-thumbnail-zoom-in">
+            <span class="img-thumbnail-overlay bg-dark opacity-25"></span>
+            <span class="img-thumbnail-content display-4 text-white">
+              <i class="ion ion-ios-search"></i>
+            </span>
+            <img [src]="dataService.url + item.image" (load)="imgLoaded()" class="img-fluid">
+          </a>
+        </div>
+      </div>
+
+      <div class="card p-2 text-center bg-light" *ngIf="allImages.length == 0">
+        {{pageImagesType == 'slider' ? 'No Sliders found.' : ''}}
+        {{pageImagesType == 'partner' ? 'No Partners found.' : ''}}
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+
+<swal #deleteDialog [options]="dialogOptions" (confirm)="onDeletePageImage()"></swal>
+
+<ng-container *ngIf="allImages.length > 0">
+  <ngx-image-gallery [images]="allImages" [conf]="conf" (onDelete)="deleteImage(); deleteDialog.show()">
+  </ngx-image-gallery>
+</ng-container>

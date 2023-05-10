@@ -1,0 +1,106 @@
+<div class="main-div">
+
+
+  <h4 class="font-weight-bold brand-color py-3 mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item cursor-pointer"><a (click)="onGoBack()">Events</a></li>
+      <li class="breadcrumb-item active">
+        {{eventType? 'Create Event' : 'Edit Event'}}
+      </li>
+    </ol>
+  </h4>
+
+
+  <!-- <div class="form-group col-md-12 p-0">
+    <agm-map [zoom]="13" class="my-3" [latitude]="eventData.lat" [longitude]="eventData.lng">
+      <agm-marker [latitude]="eventData.lat" [longitude]="eventData.lng" [markerDraggable]="true"
+        (dragEnd)="markerDragEnd($event)">
+      </agm-marker>
+    </agm-map>
+    <label class="form-label mt-3">Location</label>
+    <input ngx-google-places-autocomplete #placesRef="ngx-places" [(ngModel)]="eventData.location"
+      (onAddressChange)="onPlaceChange($event)" class="form-control" type="text" placeholder="Enter location"
+      [ngClass]="showValidation? (eventData.location ? 'is-valid' : 'is-invalid') : ''">
+  </div> -->
+
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" [(ngModel)]="eventData.title"
+      [ngClass]="showValidation ? (eventData.title ? 'is-valid' : 'is-invalid') : ''" placeholder="New Year">
+  </div>
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Subtitle</label>
+    <input type="text" class="form-control" [(ngModel)]="eventData.subtitle"
+      [ngClass]="showValidation ? (eventData.subtitle ? 'is-valid' : 'is-invalid') : ''" placeholder="New Year Event">
+  </div>
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Event Image</label>
+    <label class="custom-file">
+      <input type="file" class="custom-file-input" (change)="processFile($event, 'event')"
+        [ngClass]="showValidation ? (eventFile || eventData.eventImg ? 'is-valid' : 'is-invalid') : ''">
+      <span class="custom-file-label">{{eventFile? eventFile.name : eventData.eventImg}}</span>
+    </label>
+  </div>
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Location</label>
+    <input type="text" class="form-control" [(ngModel)]="eventData.location"
+      [ngClass]="showValidation ? (eventData.location ? 'is-valid' : 'is-invalid') : ''" placeholder="Riyadh, Saudi Arabia">
+  </div>
+
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Location Image</label>
+    <label class="custom-file">
+      <input type="file" class="custom-file-input" (change)="processFile($event, 'location')"
+        [ngClass]="showValidation ? (locationFile || eventData.locationImg ? 'is-valid' : 'is-invalid') : ''">
+      <span class="custom-file-label">{{locationFile? locationFile.name : eventData.locationImg}}</span>
+    </label>
+  </div>
+  <div class="form-group col-md-12 p-0">
+    <label class="form-label">Terms & Conditions</label>
+    <textarea rows="10" class="form-control my-textarea" [(ngModel)]="eventData.termsAndCondition"
+      [ngClass]="showValidation ? (eventData.termsAndCondition ? 'is-valid' : 'is-invalid') : ''"
+      placeholder="You will follow discipline in the event."></textarea>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label class="form-label">Date</label>
+      <div class="input-group datepicker-div">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker placement="top"
+          [(ngModel)]="myDate" #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="input-group-text" (click)="d.toggle()" type="button">
+            <span class="ion ion-md-calendar" style="cursor: pointer;"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label class="form-label">Time</label>
+      <div id="my-timepicker" class="input-group">
+        <ngb-timepicker [(ngModel)]="myTime" meridian="true"></ngb-timepicker>
+      </div>
+    </div>
+    <div class="form-group col-md-4 button-col">
+
+      <button *ngIf="eventType" (click)="onCreateEvent()" [disabled]="toolService.btnLoading"
+        class="btn btn-primary mb-3 my-button">
+        <span class="my-btn-loader">
+          Create Event
+          <span *ngIf="toolService.btnLoading" class="my-loader"></span>
+        </span>
+      </button>
+
+      <button *ngIf="!eventType" (click)="onUpdateEvent()" [disabled]="toolService.btnLoading"
+        class="btn btn-success mb-3 my-button">
+        <span class="my-btn-loader">
+          Update Event
+          <span *ngIf="toolService.btnLoading" class="my-loader"></span>
+        </span>
+      </button>
+
+    </div>
+  </div>
+
+
+</div>

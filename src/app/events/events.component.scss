@@ -1,0 +1,120 @@
+.main-table-div {
+  .top-row {
+    .left-col {
+      text-align: left;
+    }
+    .right-col {
+      text-align: right;
+      button {
+        margin: 9px auto 9px auto;
+      }
+    }
+  }
+}
+
+.section-form {
+  .buttons-div {
+    text-align: right;
+  }
+}
+.section-header {
+  background-color: #d0d0d1;
+  color: #505357;
+  padding: 15px 25px;
+  margin: 20px -25px 10px -25px;
+}
+.event-label {
+  font-size: 15px;
+}
+
+.ticket-modal {
+  // Accrodion SCSS
+  .accordion-row {
+    $midnight: #2c3e50;
+    $clouds: #ecf0f1;
+    // General
+    body {
+      color: $midnight;
+      background: $clouds;
+      padding: 0 1em 1em;
+    }
+    h1 {
+      margin: 0;
+      line-height: 2;
+      text-align: center;
+    }
+    h2 {
+      margin: 0 0 0.5em;
+      font-weight: normal;
+    }
+    input {
+      position: absolute;
+      opacity: 0;
+      z-index: -1;
+    }
+    // Layout
+    .row {
+      display: flex;
+      .col {
+        flex: 1;
+        &:last-child {
+          margin-left: 1em;
+        }
+      }
+    }
+    /* Accordion styles */
+    .tab {
+      width: 100%;
+      color: #505357;
+      overflow: hidden;
+      &-label {
+        display: flex;
+        justify-content: space-between;
+        padding: 1em;
+        background: #d0d0d1;
+        font-weight: bold;
+        cursor: pointer;
+        /* Icon */
+        &:hover {
+          background: #a3a3a3;
+        }
+        &::after {
+          content: "\276F";
+          width: 1em;
+          height: 1em;
+          text-align: center;
+          transition: all 0.35s;
+        }
+      }
+      &-content {
+        max-height: 0;
+        padding: 0 1em;
+        transition: all 0.35s;
+      }
+      &-close {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px 20px 8px 8px;
+        background: #d0d0d1;
+        cursor: pointer;
+        &:hover {
+          background: #a3a3a3;
+        }
+      }
+    }
+
+    // :checked
+    input:checked {
+      + .tab-label {
+        background: #a3a3a3;
+        &::after {
+          transform: rotate(90deg);
+        }
+      }
+      ~ .tab-content {
+        max-height: 100%;
+        padding: 0px;
+      }
+    }
+  }
+}

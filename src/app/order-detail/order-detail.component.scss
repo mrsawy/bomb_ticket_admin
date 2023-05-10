@@ -1,0 +1,47 @@
+.hidden-date {
+  display: none;
+}
+
+.detail-modal-div {
+
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #e7e7e8;
+  }
+
+  .left-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .user-image {
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      display: block;
+      border-radius: 50%;
+    }
+  }
+
+  .content-heading {
+    background-color: #d0d0d1;
+    color: #505357;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+  }
+
+  .content-spans {
+    display: block;
+    margin: 10px 5px 5px 5px;
+  }
+}
+
+
+.back-arrow {
+  color: #a3a4a6 !important;
+  cursor: pointer;
+}
+
+.back-arrow:hover {
+  color: #4E5155 !important;
+}

@@ -1,0 +1,66 @@
+<sidenav [orientation]="orientation" class="sidenav sidenav-vertical bg-light">
+
+  <!-- [ngClass]="getClasses()" -->
+
+  <!-- Inner -->
+  <div class="sidenav-inner" [ngClass]="{ 'py-1': orientation !== 'horizontal' }">
+
+    <img class="sidenav-logo" src="assets/images/bomb-ticket-logo-transparent.png">
+
+    <sidenav-router-link *ngIf="dataService?.adminReturner()?.isSuper" icon="fas fa-user-tie" route="/admins"
+      [active]="isActive('/admins')">
+      Admins
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-user" route="/users" [active]="isActive('/users')">
+      Users
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-calendar-alt" route="/events" [active]="isActive('/events')">
+      Events
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-box" route="/orders" [active]="isActive('/orders')">
+      Orders
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-percent" route="/coupons" [active]="isActive('/coupons')">
+      Coupons
+    </sidenav-router-link>
+
+    <sidenav-menu icon="fa-solid fa-money-bill-transfer" text="Withdraw Requests" [active]="isMenuActive('/withdraw')"
+      [open]="isMenuOpen('/withdraw')">
+      <sidenav-router-link route="/withdraw/unpaid" [active]="isActive('/withdraw/unpaid')">Unpaid Requests
+      </sidenav-router-link>
+      <sidenav-router-link route="/withdraw/paid" [active]="isActive('/withdraw/paid')">Paid Requests
+      </sidenav-router-link>
+    </sidenav-menu>
+
+    <sidenav-menu icon="fa-solid fa-ticket" text="Tickets" [active]="isMenuActive('/tickets')"
+      [open]="isMenuOpen('/tickets')">
+      <sidenav-router-link route="/tickets/pending" [active]="isActive('/tickets/pending')">Pending
+      </sidenav-router-link>
+      <sidenav-router-link route="/tickets/approved" [active]="isActive('/tickets/approved')">Approved
+      </sidenav-router-link>
+      <sidenav-router-link route="/tickets/sold" [active]="isActive('/tickets/sold')">Sold
+      </sidenav-router-link>
+      <sidenav-router-link route="/tickets/rejected" [active]="isActive('/tickets/rejected')">Rejected
+      </sidenav-router-link>
+    </sidenav-menu>
+
+    <sidenav-router-link icon="fas fa-images" route="/images/slider" [active]="isActive('/images/slider')">
+      Sliders
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-handshake" route="/images/partner" [active]="isActive('/images/partner')">
+      Partners
+    </sidenav-router-link>
+
+    <sidenav-router-link icon="fas fa-file-alt" route="/complains-and-suggestions"
+      [active]="isActive('/complains-and-suggestions')">
+      Complains And Suggestions
+    </sidenav-router-link>
+
+
+  </div>
+</sidenav>

@@ -1,0 +1,365 @@
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// Remove outline on desktops
+@media (min-width: 720px) {
+
+  ngb-carousel,
+  .dropdown-item,
+  ngb-datepicker,
+  ngb-rating {
+    outline: 0 !important;
+  }
+}
+
+.dropdown-menu-right {
+  right: auto !important;
+}
+
+// *******************************************************************************
+// * Page transition
+
+.router-transitions {
+  opacity: 1;
+  transition: opacity 0.2s;
+
+  body.app-loading & {
+    opacity: 0.75;
+  }
+}
+
+// *******************************************************************************
+// * Tooltip and popover animations
+
+@include keyframes(ngTooltipAnimation) {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+ngb-tooltip-window {
+  animation: ngTooltipAnimation 0.25s;
+}
+
+// *******************************************************************************
+// * Modal animations
+
+@include keyframes(ngModalBackdropAnimation) {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@include keyframes(ngMaterialModalBackdropAnimation) {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@include keyframes(ngDefaultModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateY(150px) scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@include keyframes(ngTopModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include keyframes(ngSlideModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@include keyframes(ngRtlSlideModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@include keyframes(ngFillInModalAnimation) {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+ngb-modal-backdrop.modal-backdrop {
+  opacity: 0.5;
+  animation: ngModalBackdropAnimation 0.15s ease-out;
+}
+
+ngb-modal-window {
+  &.modal .modal-dialog {
+    animation: ngDefaultModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-top .modal-dialog {
+    animation: ngTopModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-slide .modal-dialog {
+    animation: ngSlideModalAnimation 0.15s ease-out;
+  }
+
+  &.modal-fill-in .modal-dialog {
+    animation: ngFillInModalAnimation 0.15s ease-out;
+  }
+
+  [dir="rtl"] &.modal-slide .modal-dialog {
+    animation: ngRtlSlideModalAnimation 0.15s ease-out;
+  }
+}
+
+.material-style ngb-modal-backdrop.modal-backdrop {
+  opacity: 0.2;
+  animation: ngMaterialModalBackdropAnimation 0.15s ease-out;
+}
+
+// Prevent horizontal scrollbar
+[dir="rtl"] .dz-hidden-input {
+  right: 0 !important;
+  left: auto !important;
+}
+
+// *******************************************************************************
+// * Accordion
+
+ngb-accordion .card-header>*>.btn.btn-link {
+  width: 100%;
+  padding: 0;
+  text-align: inherit;
+  white-space: normal;
+  vertical-align: inherit;
+  border: 0;
+  font-size: 0.894rem;
+}
+
+.ngb-accordion-with-icon .card-header>*>.btn.btn-link {
+  display: flex;
+  justify-content: space-between;
+}
+
+// *******************************************************************************
+// * Typeahead
+
+ngb-typeahead-window .dropdown-item {
+  cursor: pointer;
+}
+
+// *******************************************************************************
+// * Custom
+
+#my-alert-div {
+  position: fixed !important;
+  right: 10px;
+  top: 10px;
+  z-index: 5000;
+  max-width: 300px;
+  width: 50%;
+
+  ngb-alert {
+    margin: 0px;
+  }
+}
+
+#my-timepicker {
+  ngb-timepicker {
+    .ngb-tp {
+      width: 100%;
+
+      .ngb-tp-input-container {
+        width: auto !important;
+      }
+    }
+  }
+}
+
+.icon-btn {
+  margin: 1px !important;
+}
+
+.ui-square-50 {
+  width: 50px !important;
+  height: 50px !important;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.my-btn-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .my-loader {
+    display: inline-block;
+    border: 5px solid #d3d3d3;
+    margin-left: 5px;
+    border-radius: 50%;
+    border-top: 5px solid white;
+    width: 25px;
+    height: 25px;
+    -webkit-animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.my-loading {
+  display: flex;
+  align-items: center;
+
+  .sk-wave {
+    height: 60px;
+
+    .sk-rect {
+      background-color: #2f3337 !important;
+      width: 10px;
+      margin: 3px;
+    }
+  }
+}
+
+// .brand-color {
+//   color: #213458 !important;
+// }
+
+// .breadcrumb {
+//   .breadcrumb-item {
+//     color: #4f658f !important;
+//   }
+//   .breadcrumb-item:hover {
+//     color: #213458 !important;
+//   }
+//   .breadcrumb-item.active {
+//     color: #213458 !important;
+//   }
+// }
+
+// .bg-sidenav-brand {
+//   background-color: #f6e8e8 !important;
+//   color: #213458 !important;
+// }
+
+// .navbar.bg-brand {
+//   background-color: #213458 !important;
+//   color: #f6e8e8 !important;
+// }
+
+// .navbar.bg-brand .navbar-brand,
+// .navbar.bg-brand a {
+//   color: #f6e8e8 !important;
+// }
+
+// .bg-sidenav-brand .sidenav-item.active > .sidenav-link:not(.sidenav-toggle) {
+//   background-color: #2b3b58 !important;
+// }
+
+.sidenav-logo {
+  max-width: 150px;
+  margin: 50px auto;
+  width: 100%;
+  padding: 5px;
+}
+
+// .bg-sidenav-brand .sidenav-item.active > .sidenav-link {
+//   color: #f6e8e8;
+// }
+
+// .bg-sidenav-brand .sidenav-item.active > .sidenav-link.sidenav-toggle {
+//   color: #213458 !important;
+// }
+
+// .bg-sidenav-brand .sidenav-link {
+//   color: #213458;
+// }
+
+.hidden-date {
+  display: none;
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("./assets/Poppins-Regular.ttf");
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+span,
+pre,
+td,
+th,
+a,
+div,
+h6 {
+  font-family: "Poppins-Regular" !important;
+}

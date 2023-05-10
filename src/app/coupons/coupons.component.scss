@@ -1,0 +1,23 @@
+.main-table-div {
+  .top-row {
+    .left-col {
+      text-align: left;
+    }
+    .right-col {
+      text-align: right;
+      button {
+        margin: 9px auto 9px auto;
+      }
+    }
+  }
+  .event-small-image {
+    width: 50px;
+    height: 50px;
+  }
+}
+.event-modal {
+  .content-spans {
+    height: auto;
+  }
+}
+

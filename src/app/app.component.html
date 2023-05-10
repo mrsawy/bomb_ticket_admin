@@ -1,0 +1,8 @@
+<div *ngIf="toolService.myAlertShow" id="my-alert-div" class="animate__animated"
+    [ngClass]="toolService.myAlertClass? 'animate__fadeIn' : 'animate__fadeOut'">
+    <ngb-alert [dismissible]="false" [type]="toolService.myAlertType">
+        {{toolService.myAlertMessage}}
+    </ngb-alert>
+</div>
+
+<router-outlet></router-outlet>

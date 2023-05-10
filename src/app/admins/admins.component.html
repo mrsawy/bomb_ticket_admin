@@ -1,0 +1,251 @@
+<ng-container *ngIf="dataService?.adminReturner()?.isSuper">
+
+  <div class="d-flex align-items-center justify-content-between py-3 mb-4">
+    <h4 class="my-text-primary font-weight-bold mb-0">
+      <i class="fas fa-user-tie"></i>&nbsp;
+      Admins
+    </h4>
+    <button class="btn btn-light d-block" (click)="openModal(percentModal, 'percentage')">
+      Edit Tax ({{percentageData?.percentage}}%)
+    </button>
+    <button class="btn btn-primary btn-round d-block" (click)="openModal(adminModal, 'create')">
+      <span class="ion ion-md-add"></span>&nbsp; Create Admin
+    </button>
+  </div>
+
+
+  <div *ngIf="toolService.showLoading" class="sk-bars-loading">
+    <div class="sk-wave">
+      <div class="sk-rect sk-rect1"></div>
+      <div class="sk-rect sk-rect2"></div>
+      <div class="sk-rect sk-rect3"></div>
+      <div class="sk-rect sk-rect4"></div>
+      <div class="sk-rect sk-rect5"></div>
+    </div>
+  </div>
+
+
+
+  <div class="card" *ngIf="toolService.showLoading == false">
+
+
+    <!-- Table controls -->
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col">
+          Per page: &nbsp;
+          <select [(ngModel)]="perPage" (change)="update()"
+            class="custom-select custom-select-sm d-inline-block w-auto">
+            <option *ngFor="let limit of [10, 20, 30, 40, 50]">{{limit}}</option>
+          </select>
+        </div>
+        <div class="col">
+          <input type="text" [(ngModel)]="filterVal" (input)="currentPage = 1; update()"
+            class="form-control form-control-sm d-inline-block w-auto float-sm-right" placeholder="Search...">
+        </div>
+      </div>
+
+    </div>
+    <!-- / Table controls -->
+
+    <!-- Table -->
+    <hr class="border-light m-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered card-table">
+        <thead>
+          <tr>
+            <th class="text-nowrap text-center cursor-pointer" (click)="setSort('id')">
+              #<i class="ion text-muted ml-2" *ngIf="sortBy=='id'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap text-center cursor-pointer" (click)="setSort('name')">
+              Admin<i class="ion text-muted ml-2" *ngIf="sortBy=='name'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" (click)="setSort('email')">
+              Email<i class="ion text-muted ml-2" *ngIf="sortBy=='email'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" (click)="setSort('phoneNumber')">
+              Phone Number<i class="ion text-muted ml-2" *ngIf="sortBy=='phoneNumber'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap text-center cursor-pointer" (click)="setSort('isSuper')">
+              Role<i class="ion text-muted ml-2" *ngIf="sortBy=='isSuper'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" (click)="setSort('createdAt')">
+              Member Since<i class="ion text-muted ml-2" *ngIf="sortBy=='createdAt'"
+                [ngClass]="'ion-md-arrow-' + (sortDesc ? 'down' : 'up')"></i>
+            </th>
+            <th class="text-nowrap text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="allAdmins.length > 0">
+          <tr *ngFor="let item of allAdmins; index as i">
+            <td class="align-middle text-center">{{i + 1}}</td>
+            <td class="align-middle">
+              <img class="user-image d-block mb-1"
+                [src]="item?.profilePhoto ? dataService.url + item?.profilePhoto : 'assets/images/profile-image.png'">
+              <span class="d-block text-center font-weight-bold">
+                {{item?.name}}
+              </span>
+            </td>
+            <td class="align-middle">{{item?.email}}</td>
+            <td class="align-middle">{{item?.phoneNumber}}</td>
+            <td class="align-middle text-center">
+              <span *ngIf="item?.isSuper != null" class="badge"
+                [ngClass]="item?.isSuper ? 'badge-primary' : 'badge-secondary'">
+                {{item?.isSuper ? 'Super Admin' : 'Admin'}}
+              </span>
+            </td>
+            <td class="align-middle text-nowrap">
+              <span style="display: none;">{{item?.createdAt}}</span>
+              {{item?.createdAt | date:'mediumDate'}} <br>
+              <!-- {{item?.createdAt | date:'mediumTime'}} -->
+            </td>
+            <td class="text-center text-nowrap align-middle">
+              <button class="btn btn-sm icon-btn btn-outline-primary m-1" (click)="openModal(adminModal, 'edit', item)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button *ngIf="!item?.isSuper" class="btn btn-sm icon-btn btn-outline-danger m-1"
+                (click)="adminData=item; deleteDialog.show()">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="allAdmins.length == 0" class="text-center m-3">
+        No data found!
+      </p>
+    </div>
+    <!-- / Table -->
+
+    <!-- Pagination -->
+    <div class="card-body py-0">
+
+      <div class="row">
+        <div class="col-sm text-sm-left text-center pt-3">
+          <span class="text-muted" *ngIf="totalItems">
+            Page {{ currentPage }} of {{ totalPages }}
+            &nbsp;
+            (Total: {{totalItems}})
+          </span>
+        </div>
+        <div class="col-sm pt-3">
+          <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage" [maxSize]="1"
+            (pageChange)="update()" size="sm" class="d-flex justify-content-center justify-content-sm-end m-0">
+          </ngb-pagination>
+        </div>
+      </div>
+
+    </div>
+    <!-- / Pagination -->
+  </div>
+
+
+
+  <swal #deleteDialog title="Are you sure?" message="'You won\'t be able to revert this!'" type="warning" [options]="{showCancelButton:
+  true, confirmButtonText: 'Yes, delete it!', showCloseButton: true, confirmButtonClass: 'btn btn-lg btn-warning' }"
+    (confirm)="onDeleteAdmin()"></swal>
+
+
+
+  <ng-template #adminModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        {{modalType == 'create' ? 'Create Admin' : ''}}
+        {{modalType == 'edit' ? 'Update Admin' : ''}}
+        {{modalType == 'password' ? 'Change Password' : ''}}
+      </h5>
+      <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form">
+        <ng-container *ngIf="modalType == 'create' || modalType == 'edit'">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" [(ngModel)]="adminData.name" class="form-control" placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="text" [(ngModel)]="adminData.email" class="form-control" placeholder="johndoe@gmail.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" [(ngModel)]="adminData.phoneNumber" class="form-control" placeholder="+123 456 789">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Profile Photo</label>
+            <label class="custom-file">
+              <input (change)="processFile($event)" type="file" class="custom-file-input" accept=".png,.jpg,.jpeg">
+              <span class="custom-file-label">{{selectedFile ? selectedFile?.name : adminData?.profilePhoto}}</span>
+            </label>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalType == 'create' || modalType == 'password'">
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" [(ngModel)]="adminData.password" class="form-control" placeholder="********">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" [(ngModel)]="adminData.confirmPassword" class="form-control" placeholder="********">
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button tabindex="-1" *ngIf="modalType == 'edit' || modalType == 'password'" (click)="changePass()"
+        class="btn btn-light">
+        <ng-container *ngIf="modalType == 'edit'">Password</ng-container>
+        <ng-container *ngIf="modalType == 'password'">Edit</ng-container>
+      </button>
+      <button (click)="onBtnClick()" [disabled]="toolService.btnLoading" class="btn btn-primary">
+        <span class="my-btn-loader">
+          <ng-container *ngIf="modalType == 'create'">Create</ng-container>
+          <ng-container *ngIf="modalType == 'edit'">Update</ng-container>
+          <ng-container *ngIf="modalType == 'password'">Update Password</ng-container>
+          <span *ngIf="toolService.btnLoading" class="my-loader"></span>
+        </span>
+      </button>
+      <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
+    </div>
+
+  </ng-template>
+
+
+
+
+  <ng-template #percentModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        Edit Percentage
+      </h5>
+      <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form">
+        <div class="form-group">
+          <label class="form-label">Percentage</label>
+          <input type="number" [(ngModel)]="percentageData.percentage" class="form-control" placeholder="20">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="onUpdatePercentage()" [disabled]="toolService.btnLoading" class="btn btn-primary">
+        <span class="my-btn-loader">
+          Update
+          <span *ngIf="toolService.btnLoading" class="my-loader"></span>
+        </span>
+      </button>
+      <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
+    </div>
+
+  </ng-template>
+
+
+</ng-container>

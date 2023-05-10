@@ -1,0 +1,30 @@
+.ticket-modal-div,
+.approve-modal-div,
+.reject-modal-div {
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #e7e7e8;
+  }
+  th {
+    width: 30%;
+  }
+  td {
+    width: 70%;
+  }
+  .align-header {
+    text-align: center;
+    align-items: center;
+  }
+  .modal-header {
+    flex-direction: column;
+    justify-content: center;
+    .btn-div {
+      width: 100%;
+      position: relative;
+      .close {
+        top: 10px;
+        right: -15px;
+      }
+    }
+  }
+}

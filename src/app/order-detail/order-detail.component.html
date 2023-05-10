@@ -1,0 +1,208 @@
+<div class="main-table-div">
+
+
+  <h4 class="font-weight-bold py-3 mb-4">
+    <a class="back-arrow" (click)="location.back()">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    &nbsp;
+    Order Detail (#{{orderDetail?.orderNumber}})
+  </h4>
+
+  <ng-container *ngIf="toolService.showLoading == true">
+    <div class="col my-loading">
+      <div class="sk-wave sk-primary">
+        <div class="sk-rect sk-rect1"></div>
+        <div class="sk-rect sk-rect2"></div>
+        <div class="sk-rect sk-rect3"></div>
+        <div class="sk-rect sk-rect4"></div>
+        <div class="sk-rect sk-rect5"></div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="toolService.showLoading == false">
+    <div class="detail-modal-div">
+
+      <h6 class="content-heading mt-0">Order Detail</h6>
+      <div class="mb-3 row">
+        <span class="col-md-6">
+          <b>Name:</b> {{orderDetail?.firstName + ' ' + orderDetail?.lastName}}
+        </span>
+        <span class="col-md-6">
+          <b>Phone:</b> {{orderDetail?.phoneNumber}}
+        </span>
+        <span class="col-md-6">
+          <b>Order Amount:</b> {{orderDetail?.orderAmount ? orderDetail?.orderAmount : '0'}} SAR
+        </span>
+        <span class="col-md-6">
+          <b>Discount:</b> {{orderDetail?.discount ? orderDetail?.discount : '0'}} SAR
+        </span>
+        <span class="col-md-6">
+          <b>Final Price:</b> {{orderDetail?.price ? orderDetail?.price : '0'}} SAR
+        </span>
+        <span class="col-md-6">
+          <b>Quantity:</b> {{orderDetail?.quantity}}
+        </span>
+      </div>
+
+      <div class="row mb-3">
+
+        <div class="col-md-6">
+          <h6 class="content-heading">User Detail</h6>
+          <div class="row">
+            <div class="col-3 left-col">
+              <img class="user-image"
+                [src]="orderDetail.user.profileImg? dataService.url + orderDetail.user.profileImg : 'assets/images/profile-image.png'">
+            </div>
+            <div class="col-9">
+              <span class="content-spans">
+                <b>Name:</b> {{orderDetail?.user?.firstName + ' ' + orderDetail?.user?.lastName}}
+              </span>
+              <span class="content-spans">
+                <b>Email:</b> {{orderDetail?.user?.email}}
+              </span>
+              <span class="content-spans">
+                <b>Phone Number:</b> {{orderDetail?.user?.phoneNumber}}
+              </span>
+              <span class="content-spans">
+                <b>Gender:</b> {{orderDetail?.user?.gender}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <h6 class="content-heading">Seller Detail</h6>
+          <div class="row">
+            <div class="col-3 left-col">
+              <img class="user-image"
+                [src]="orderDetail.seller.profileImg? dataService.url + orderDetail.seller.profileImg : 'assets/images/profile-image.png'">
+            </div>
+            <div class="col-9">
+              <span class="content-spans">
+                <b>Name:</b> {{orderDetail?.seller?.firstName + ' ' + orderDetail?.seller?.lastName}}
+              </span>
+              <span class="content-spans">
+                <b>Email:</b> {{orderDetail?.seller?.email}}
+              </span>
+              <span class="content-spans">
+                <b>Phone Number:</b> {{orderDetail?.seller?.phoneNumber}}
+              </span>
+              <span class="content-spans">
+                <b>Gender:</b> {{orderDetail?.seller?.gender}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <h6 class="content-heading mt-0">Coupon Detail</h6>
+      <div class="mb-3 row">
+        <ng-container *ngIf="orderDetail?.user_coupon">
+          <span class="col-md-4">
+            <b>Name:</b> {{orderDetail?.user_coupon?.coupon?.name}}
+          </span>
+          <span class="col-md-4">
+            <b>Percent Off:</b> {{orderDetail?.user_coupon?.coupon?.percentOff}}
+          </span>
+          <span class="col-md-4">
+            <b>User Coupon Status:</b>
+            <span *ngIf="orderDetail?.user_coupon?.status=='active'" class="badge badge-primary">Active</span>
+            <span *ngIf="orderDetail?.user_coupon?.status=='used'" class="badge badge-success">Used</span>
+            <span *ngIf="orderDetail?.user_coupon?.status=='expired'" class="badge badge-secondary">Expired</span>
+            <span *ngIf="!orderDetail?.user_coupon?.status">-</span>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="!orderDetail?.user_coupon">
+          <div class="col-12 text-center">
+            No Copon applied!
+          </div>
+        </ng-container>
+      </div>
+
+      <h6 class="content-heading mt-0">Order Tickets</h6>
+
+
+      <div class="card">
+
+
+        <!-- Table -->
+        <hr class="border-light m-0">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered card-table">
+            <thead>
+              <tr>
+                <th class="text-nowrap align-middle text-center">Ticket</th>
+                <th class="text-nowrap align-middle">Price</th>
+                <th class="text-nowrap align-middle">Tax</th>
+                <th class="text-nowrap align-middle">Final Price</th>
+                <th class="text-nowrap align-middle text-center">Event Image</th>
+                <th class="text-nowrap align-middle">Event Title</th>
+                <th class="text-nowrap align-middle">Event Date Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of orderDetail?.order_tickets">
+                <td class="text-center">
+                  <a *ngIf="item?.ticket?.image" [href]="dataService.url + item?.ticket?.image" target="_blank"
+                    class="btn btn-sm btn-outline-primary">
+                    Download
+                  </a>
+                </td>
+                <td>{{item?.ticket?.price ? item?.ticket?.price : '0'}} SAR</td>
+                <td>{{item?.ticket?.tax ? item?.ticket?.tax : '0'}} SAR</td>
+                <td>{{item?.ticket?.finalPrice ? item?.ticket?.finalPrice : '0'}} SAR</td>
+                <td class="text-center">
+                  <a *ngIf="item?.ticket?.sell_ticket?.event?.eventImg"
+                    [href]="dataService.url + item?.ticket?.sell_ticket?.event?.eventImg" target="_blank">
+                    <img class="ui-square-50" [src]="dataService.url + item?.ticket?.sell_ticket?.event?.eventImg">
+                  </a>
+                </td>
+                <td>{{item?.ticket?.sell_ticket?.event?.title}}</td>
+                <td>
+                  {{item?.ticket?.sell_ticket?.event?.dateTime | myDateTime}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p *ngIf="orderDetail?.order_tickets?.length == 0" class="text-center m-3">
+            No data found!
+          </p>
+        </div>
+        <!-- / Table -->
+
+        <!-- Pagination -->
+        <div class="card-body py-0">
+
+          <div class="row">
+            <div class="col-sm text-sm-left text-center pt-3">
+              <span class="text-muted" *ngIf="ticTotalItems">
+                Page {{ ticCurrentPage }} of {{ ticTotalPages }}
+                &nbsp;
+                (Total:{{ticTotalItems}})
+              </span>
+            </div>
+            <div class="col-sm pt-3">
+              <ngb-pagination [collectionSize]="ticTotalItems" [pageSize]="ticPerPage" [(page)]="ticCurrentPage"
+                [maxSize]="1" (pageChange)="ticUpdate()" size="sm"
+                class="d-flex justify-content-center justify-content-sm-end m-0">
+              </ngb-pagination>
+            </div>
+          </div>
+
+        </div>
+        <!-- / Pagination -->
+      </div>
+
+
+
+    </div>
+
+  </ng-container>
+
+</div>

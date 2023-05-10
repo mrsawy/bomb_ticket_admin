@@ -1,0 +1,143 @@
+<div class="main-table-div">
+
+  <h4 class="font-weight-bold brand-color py-3 mb-4">
+    <i class="fas fa-box"></i>
+    Orders
+  </h4>
+
+  <ng-container *ngIf="toolService.showLoading == true">
+    <div class="col my-loading">
+      <div class="sk-wave sk-primary">
+        <div class="sk-rect sk-rect1"></div>
+        <div class="sk-rect sk-rect2"></div>
+        <div class="sk-rect sk-rect3"></div>
+        <div class="sk-rect sk-rect4"></div>
+        <div class="sk-rect sk-rect5"></div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container>
+    <div class="card" *ngIf="toolService.showLoading == false">
+
+      <!-- Table controls -->
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col">
+            Per page: &nbsp;
+            <select [(ngModel)]="ordPerPage" (change)="ordUpdate()"
+              class="custom-select custom-select-sm d-inline-block w-auto">
+              <option *ngFor="let limit of [10, 20, 30, 40, 50]">{{limit}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="text" [(ngModel)]="ordFilterVal" (input)="ordCurrentPage = 1; ordUpdate()"
+              class="form-control form-control-sm d-inline-block w-auto float-sm-right" placeholder="Search...">
+          </div>
+        </div>
+
+      </div>
+      <!-- / Table controls -->
+
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered card-table">
+          <thead>
+            <tr>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('id')">
+                ID<i class="ion text-muted ml-2" *ngIf="ordSortBy=='id'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('orderNumber')">
+                Order#<i class="ion text-muted ml-2" *ngIf="ordSortBy=='orderNumber'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('sellerName')">
+                Seller<i class="ion text-muted ml-2" *ngIf="ordSortBy=='sellerName'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('buyerName')">
+                Buyer<i class="ion text-muted ml-2" *ngIf="ordSortBy=='buyerName'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('phoneNumber')">
+                Phone Number<i class="ion text-muted ml-2" *ngIf="ordSortBy=='phoneNumber'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('orderAmount')">
+                Order Amount<i class="ion text-muted ml-2" *ngIf="ordSortBy=='orderAmount'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('discount')">
+                Discount<i class="ion text-muted ml-2" *ngIf="ordSortBy=='discount'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap cursor-pointer" (click)="ordSetSort('price')">
+                Final Price<i class="ion text-muted ml-2" *ngIf="ordSortBy=='price'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap text-center cursor-pointer" (click)="ordSetSort('quantity')">
+                Quantity<i class="ion text-muted ml-2" *ngIf="ordSortBy=='quantity'"
+                  [ngClass]="'ion-md-arrow-' + (ordSortDesc ? 'down' : 'up')"></i>
+              </th>
+              <th class="text-nowrap text-center">
+                Details
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="ordersData.length > 0">
+            <tr *ngFor="let item of ordersData">
+              <td class="align-middle">{{item?.id}}</td>
+              <td class="align-middle">{{item?.orderNumber}}</td>
+              <td class="align-middle">{{item?.sellerName}}</td>
+              <td class="align-middle">{{item?.buyerName}}</td>
+              <td class="align-middle">{{item?.phoneNumber}}</td>
+              <td class="align-middle">{{item?.orderAmount ? item?.orderAmount : '0'}} SAR</td>
+              <td class="align-middle">{{item?.discount ? item?.discount : '0'}} SAR</td>
+              <td class="align-middle">{{item?.price ? item?.price : '0'}} SAR</td>
+              <td class="align-middle text-center">
+                {{item?.quantity ? item?.quantity : '-'}}
+              </td>
+              <td class="text-center text-nowrap align-middle">
+                <button routerLink="/order-detail/{{item?.id}}" class="btn btn-sm btn-outline-primary">
+                  View Detail
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="ordersData.length == 0" class="text-center m-3">
+          No data found!
+        </p>
+      </div>
+      <!-- / Table -->
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="ordTotalItems">
+              Page {{ ordCurrentPage }} of {{ ordTotalPages }}
+              &nbsp;
+              (Total: {{ordTotalItems}})
+            </span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="ordTotalItems" [pageSize]="ordPerPage" [(page)]="ordCurrentPage"
+              [maxSize]="1" (pageChange)="ordUpdate()" size="sm"
+              class="d-flex justify-content-center justify-content-sm-end m-0">
+            </ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!-- / Pagination -->
+    </div>
+  </ng-container>
+
+
+</div>
